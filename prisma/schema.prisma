@@ -1,0 +1,51 @@
+// Esquema de la base de datos — Catálogo KIDU
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Zapatilla {
+  id          String   @id @default(uuid())
+  marca       String
+  modelo      String
+  // La lista cerrada de categorías vive en src/lib/categorias.ts (no en la DB),
+  // así se puede editar sin correr una migración.
+  categoria   String
+  // Precio en pesos argentinos, sin decimales.
+  precio      Int
+  descripcion String?
+  // URLs de Vercel Blob. La primera es la imagen principal.
+  imagenes    String[] @default([])
+  // Soft delete: oculta el modelo del catálogo público sin borrarlo.
+  activo      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  talles Talle[]
+
+  @@index([activo])
+  @@index([marca])
+  @@index([categoria])
+  @@index([precio])
+}
+
+model Talle {
+  id          String @id @default(uuid())
+  // Se permite decimal para talles tipo 40.5
+  talle       Float
+  // false = agotado. En el catálogo público se muestra tachado, no se oculta.
+  stock       Boolean @default(true)
+  zapatillaId String
+
+  zapatilla Zapatilla @relation(fields: [zapatillaId], references: [id], onDelete: Cascade)
+
+  @@unique([zapatillaId, talle])
+  @@index([talle])
+}
