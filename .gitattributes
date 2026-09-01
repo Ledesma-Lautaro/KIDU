@@ -1,0 +1,9 @@
+# Guardar todo con LF en el repo. Evita diffs ruidosos entre Windows y el
+# build de Vercel, que corre en Linux.
+* text=auto eol=lf
+
+# Binarios: que git no los toque.
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary
