@@ -4,6 +4,9 @@ export const CATEGORIAS = [
   "basketball",
   "skate",
   "lifestyle",
+  "botines",
+  "deportivas",
+  "niños",
 ] as const;
 
 export type Categoria = (typeof CATEGORIAS)[number];
