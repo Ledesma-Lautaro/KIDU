@@ -11,6 +11,8 @@ import {
   type Orden,
 } from "@/lib/filtros";
 import { formatearPrecio, formatearTalle } from "@/lib/format";
+import { BotonTablaTalles } from "@/components/talles/BotonTablaTalles";
+import { equivalenciaCompleta } from "@/lib/talles";
 
 export type Facetas = {
   marcas: string[];
@@ -176,12 +178,13 @@ export function ControlesCatalogo({ facetas, filtros, total, children }: Props) 
       </Grupo>
 
       {facetas.talles.length > 0 && (
-        <Grupo titulo="Talle disponible">
+        <Grupo titulo="Talle disponible (BR)">
           <div className="flex flex-wrap gap-2">
             {facetas.talles.map((t) => (
               <Chip
                 key={t}
                 activo={filtros.talles.includes(t)}
+                titulo={equivalenciaCompleta(t)}
                 onClick={() =>
                   navegar({ talles: alternar([...filtros.talles], t) })
                 }
@@ -189,6 +192,9 @@ export function ControlesCatalogo({ facetas, filtros, total, children }: Props) 
                 {formatearTalle(t)}
               </Chip>
             ))}
+          </div>
+          <div className="mt-3">
+            <BotonTablaTalles />
           </div>
         </Grupo>
       )}
@@ -342,10 +348,12 @@ function Grupo({
 function Chip({
   activo,
   onClick,
+  titulo,
   children,
 }: {
   activo: boolean;
   onClick: () => void;
+  titulo?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -353,6 +361,7 @@ function Chip({
       type="button"
       onClick={onClick}
       aria-pressed={activo}
+      title={titulo}
       className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${
         activo
           ? "border-violeta bg-violeta text-white"

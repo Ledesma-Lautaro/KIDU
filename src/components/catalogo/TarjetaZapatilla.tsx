@@ -64,7 +64,7 @@ export function TarjetaZapatilla({
 
         {disponibles.length > 0 && (
           <p className="text-xs text-gris">
-            Talles:{" "}
+            Talles BR:{" "}
             <span className="text-tinta">
               {disponibles
                 .slice(0, 6)

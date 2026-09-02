@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { formatearTalle } from "@/lib/format";
+import { equivalenciaCompleta } from "@/lib/talles";
 
 export type TalleForm = { talle: number; stock: boolean };
 
@@ -53,7 +54,12 @@ export function EditorTalles({
   return (
     <div className="space-y-4">
       <div>
-        <p className="mb-2 text-xs text-gris">Agregado rápido</p>
+        <p className="mb-2 text-xs text-gris">
+          Agregado rápido —{" "}
+          <span className="font-semibold text-tinta">
+            cargá el talle BR, el que viene marcado en la zapatilla
+          </span>
+        </p>
         <div className="flex flex-wrap gap-1.5">
           {PRESETS.map((p) => (
             <button
@@ -61,6 +67,7 @@ export function EditorTalles({
               type="button"
               onClick={() => alternarPreset(p)}
               aria-pressed={cargados.has(p)}
+              title={equivalenciaCompleta(p)}
               className={`min-w-11 rounded-lg border px-2.5 py-1.5 text-sm font-semibold transition ${
                 cargados.has(p)
                   ? "border-tinta bg-tinta text-white"
@@ -144,6 +151,7 @@ export function EditorTalles({
                   aria-label={`Talle ${formatearTalle(t.talle)}: ${
                     t.stock ? "disponible" : "agotado"
                   }`}
+                  title={equivalenciaCompleta(t.talle)}
                   className={`rounded-l-lg border px-3 py-2 text-sm font-semibold transition ${
                     t.stock
                       ? "border-violeta bg-violeta text-white"
