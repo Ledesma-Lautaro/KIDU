@@ -4,8 +4,6 @@ import { ControlesCatalogo } from "@/components/catalogo/ControlesCatalogo";
 import { TarjetaZapatilla } from "@/components/catalogo/TarjetaZapatilla";
 import { Paginacion } from "@/components/catalogo/Paginacion";
 import { AvisoSinBaseDeDatos } from "@/components/site/AvisoSinBaseDeDatos";
-import { Marquesina } from "@/components/site/Marquesina";
-import { Drip } from "@/components/site/Drip";
 import { Constelacion } from "@/components/marca/Constelacion";
 import { buscarZapatillas, obtenerFacetas } from "@/lib/consultas";
 import { parsearFiltros } from "@/lib/filtros";
@@ -40,7 +38,7 @@ export default async function PaginaCatalogo({
 
         <section
           id="catalogo"
-          className="mx-auto max-w-7xl scroll-mt-20 px-4 pb-14 pt-20 sm:px-6 lg:px-8"
+          className="mx-auto max-w-7xl scroll-mt-20 px-4 py-14 sm:px-6 lg:px-8"
         >
           {!datos || !facetas ? (
             <AvisoSinBaseDeDatos />
@@ -109,9 +107,9 @@ function Hero({ total, marcas }: { total: number; marcas: number }) {
           >
             <span className="block">Zapatillas</span>
             <span className="block bg-gradient-to-r from-violeta-neon via-violeta to-violeta-electrico bg-clip-text text-transparent">
-              con drip
+              que hablan
             </span>
-            <span className="block">de verdad</span>
+            <span className="block">por vos</span>
           </h1>
 
           <p
@@ -134,8 +132,6 @@ function Hero({ total, marcas }: { total: number; marcas: number }) {
 
       </div>
 
-      <Marquesina invertida />
-      <Drip className="-mt-px text-violeta" />
     </section>
   );
 }

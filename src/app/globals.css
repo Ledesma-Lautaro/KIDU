@@ -82,15 +82,6 @@ input[type="number"] {
   }
 }
 
-@keyframes desplazar {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 @keyframes latir {
   0%,
   100% {
@@ -100,16 +91,6 @@ input[type="number"] {
   50% {
     opacity: 0.9;
     transform: scale(1.12);
-  }
-}
-
-@keyframes gotear {
-  0%,
-  100% {
-    transform: translateY(0) scaleY(1);
-  }
-  50% {
-    transform: translateY(6px) scaleY(1.14);
   }
 }
 
@@ -128,16 +109,8 @@ input[type="number"] {
   animation: flotar 7s ease-in-out infinite;
 }
 
-.anim-marquesina {
-  animation: desplazar 32s linear infinite;
-}
-
 .anim-latir {
   animation: latir 5s ease-in-out infinite;
-}
-
-.anim-gotear {
-  animation: gotear 4.5s ease-in-out infinite;
 }
 
 .anim-entrar {
@@ -156,9 +129,7 @@ input[type="number"] {
 
 @media (prefers-reduced-motion: reduce) {
   .anim-flotar,
-  .anim-marquesina,
   .anim-latir,
-  .anim-gotear,
   .anim-entrar {
     animation: none !important;
   }
