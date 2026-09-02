@@ -1,8 +1,6 @@
 export const CATEGORIAS = [
   "running",
   "urbana",
-  "basketball",
-  "skate",
   "lifestyle",
   "botines",
   "deportivas",

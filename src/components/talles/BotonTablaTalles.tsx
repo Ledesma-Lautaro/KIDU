@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { TablaTalles } from "./TablaTalles";
 
 export function BotonTablaTalles({
@@ -49,41 +50,43 @@ export function BotonTablaTalles({
         Ver tabla de talles
       </button>
 
-      {abierta && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label="Tabla de talles"
-          className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center"
-        >
-          <button
-            type="button"
-            aria-label="Cerrar"
-            onClick={() => setAbierta(false)}
-            className="absolute inset-0 bg-tinta/60 backdrop-blur-sm"
-          />
+      {abierta &&
+        createPortal(
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Tabla de talles"
+            className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center"
+          >
+            <button
+              type="button"
+              aria-label="Cerrar"
+              onClick={() => setAbierta(false)}
+              className="absolute inset-0 bg-tinta/60 backdrop-blur-sm"
+            />
 
-          <div className="relative max-h-[88dvh] w-full overflow-y-auto rounded-t-3xl bg-white p-6 sm:max-w-lg sm:rounded-marco sm:p-8">
-            <div className="mb-5 flex items-start justify-between gap-4">
-              <div>
-                <h2 className="titulo-display text-2xl">Tabla de talles</h2>
-                <p className="mt-1 text-sm text-gris">
-                  Equivalencias BR · ARG · EUR
-                </p>
+            <div className="relative max-h-[88dvh] w-full overflow-y-auto rounded-t-3xl bg-white p-6 sm:max-w-lg sm:rounded-marco sm:p-8">
+              <div className="mb-5 flex items-start justify-between gap-4">
+                <div>
+                  <h2 className="titulo-display text-2xl">Tabla de talles</h2>
+                  <p className="mt-1 text-sm text-gris">
+                    Equivalencias BR · ARG · EUR
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setAbierta(false)}
+                  className="rounded-full border border-borde px-3 py-1.5 text-sm font-semibold text-tinta transition hover:border-tinta"
+                >
+                  Cerrar
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => setAbierta(false)}
-                className="rounded-full border border-borde px-3 py-1.5 text-sm font-semibold text-tinta transition hover:border-tinta"
-              >
-                Cerrar
-              </button>
-            </div>
 
-            <TablaTalles resaltado={resaltado} />
-          </div>
-        </div>
-      )}
+              <TablaTalles resaltado={resaltado} />
+            </div>
+          </div>,
+          document.body
+        )}
     </>
   );
 }
