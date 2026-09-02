@@ -25,7 +25,6 @@ export default async function PaginaCatalogo({
       obtenerFacetas(),
     ]);
   } catch (error) {
-    // Todavía sin base de datos conectada (típico en la primera corrida).
     console.error("[catalogo] No se pudo leer la base de datos:", error);
   }
 
@@ -77,7 +76,6 @@ export default async function PaginaCatalogo({
 function Hero({ total, marcas }: { total: number; marcas: number }) {
   return (
     <section className="relative overflow-hidden border-b border-borde bg-white">
-      {/* Mancha violeta de fondo: da energía sin competir con las fotos. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-32 -top-32 size-[34rem] rounded-full bg-violeta/20 blur-3xl"

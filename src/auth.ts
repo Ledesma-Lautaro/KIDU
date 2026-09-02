@@ -2,7 +2,6 @@ import { timingSafeEqual } from "node:crypto";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
-/** Comparación en tiempo constante, para no filtrar el largo por timing. */
 function coincide(a: string, b: string): boolean {
   const bufA = Buffer.from(a, "utf8");
   const bufB = Buffer.from(b, "utf8");
@@ -26,8 +25,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const passwordEsperada = process.env.ADMIN_PASSWORD;
 
         if (!usuarioEsperado || !passwordEsperada) {
-          // Sin credenciales configuradas nadie entra: evita un admin abierto
-          // por olvidarse de setear las variables en producción.
           console.error(
             "[auth] Falta configurar ADMIN_USER y/o ADMIN_PASSWORD."
           );

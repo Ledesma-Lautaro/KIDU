@@ -54,7 +54,6 @@ export function FormularioZapatilla({
     valor: ValoresIniciales[K]
   ) {
     setValores((v) => ({ ...v, [campo]: valor }));
-    // Al editar un campo se limpia su error, así el formulario no queda en rojo.
     setErrores((previos) => {
       if (!(campo in previos)) return previos;
       const resto = { ...previos };
@@ -88,7 +87,6 @@ export function FormularioZapatilla({
       }
 
       if (continuarCargando) {
-        // Carga en tandas: se conserva marca y categoría, que suelen repetirse.
         setValores({
           ...VALORES_VACIOS,
           marca: valores.marca,
@@ -115,7 +113,6 @@ export function FormularioZapatilla({
         enviar(false);
       }}
       onKeyDown={(e) => {
-        // Ctrl/Cmd + Enter guarda sin tener que ir hasta el botón.
         if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
           e.preventDefault();
           enviar(false);

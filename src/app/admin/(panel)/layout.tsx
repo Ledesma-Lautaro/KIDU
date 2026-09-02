@@ -15,7 +15,6 @@ export default async function LayoutPanel({
 }: {
   children: React.ReactNode;
 }) {
-  // El panel entero se protege acá: cualquier página bajo (panel) exige sesión.
   const sesion = await auth();
   if (!sesion?.user) redirect("/admin/login");
 

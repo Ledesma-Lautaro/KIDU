@@ -5,7 +5,6 @@ import { prisma } from "@/lib/prisma";
 export const metadata: Metadata = { title: "Nueva zapatilla" };
 
 export default async function PaginaNueva() {
-  // Se usan para autocompletar el campo "marca" y no repetir tipeos.
   const marcas = await prisma.zapatilla
     .findMany({
       distinct: ["marca"],

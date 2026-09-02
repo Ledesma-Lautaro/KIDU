@@ -80,7 +80,6 @@ export function TarjetaZapatilla({
         />
       </div>
 
-      {/* Overlay clickeable: hace toda la tarjeta un link sin anidar anchors. */}
       <Link
         href={`/zapatilla/${id}`}
         className="absolute inset-0 z-0"

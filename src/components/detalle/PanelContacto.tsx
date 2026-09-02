@@ -6,10 +6,6 @@ import { formatearTalle } from "@/lib/format";
 
 type TalleVista = { id: string; talle: number; stock: boolean };
 
-/**
- * Selector de talle + botón de WhatsApp. Van juntos porque el talle elegido
- * se inyecta en el mensaje precargado.
- */
 export function PanelContacto({
   id,
   marca,

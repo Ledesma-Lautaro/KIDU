@@ -5,7 +5,6 @@ import { formatearTalle } from "@/lib/format";
 
 export type TalleForm = { talle: number; stock: boolean };
 
-/** Talles que se cargan más seguido; están a un click. */
 const PRESETS = [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46];
 
 export function EditorTalles({

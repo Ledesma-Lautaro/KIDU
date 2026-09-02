@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { aQueryString, type FiltrosCatalogo } from "@/lib/filtros";
 
-/** Devuelve los números de página a mostrar, con "…" donde se saltea. */
 function ventana(actual: number, total: number): (number | "…")[] {
   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
 

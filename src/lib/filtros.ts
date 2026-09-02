@@ -1,12 +1,5 @@
 import { esCategoriaValida } from "./categorias";
 
-/**
- * Estado de los filtros del catálogo, y su traducción desde/hacia la URL.
- *
- * Vive en su propio módulo (sin Prisma) para que lo pueda importar tanto el
- * servidor como los componentes cliente sin arrastrar la DB al bundle.
- */
-
 export const POR_PAGINA = 24;
 
 export const ORDENES = {
@@ -47,7 +40,6 @@ function comoTexto(valor: string | string[] | undefined): string {
   return (Array.isArray(valor) ? valor[0] : valor ?? "").trim();
 }
 
-/** Lee y sanea los searchParams de la URL. Nunca tira: ante algo raro, ignora. */
 export function parsearFiltros(params: ParamsCrudos): FiltrosCatalogo {
   const ordenCrudo = comoTexto(params.orden);
   const orden: Orden = ordenCrudo in ORDENES ? (ordenCrudo as Orden) : "nuevo";
@@ -67,7 +59,6 @@ export function parsearFiltros(params: ParamsCrudos): FiltrosCatalogo {
   };
 }
 
-/** Arma la query string a partir de los filtros, omitiendo lo que está vacío. */
 export function aQueryString(f: Partial<FiltrosCatalogo>): string {
   const p = new URLSearchParams();
   if (f.q) p.set("q", f.q);

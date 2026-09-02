@@ -1,8 +1,3 @@
-/**
- * Se muestra cuando la app no puede leer la base de datos.
- * Sirve de checklist para la primera puesta en marcha; en producción, con la
- * DB conectada, nunca aparece.
- */
 export function AvisoSinBaseDeDatos() {
   const pasos = [
     "Creá una base Postgres (Vercel → Storage → Postgres, o neon.tech gratis).",

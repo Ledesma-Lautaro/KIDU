@@ -1,10 +1,3 @@
-/**
- * Carga datos de ejemplo para poder ver el catálogo funcionando antes de tener
- * las fotos reales. Es seguro correrlo varias veces: borra los modelos de demo
- * anteriores (los que empiezan con "DEMO ") y los vuelve a crear.
- *
- *   npm run db:seed
- */
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();

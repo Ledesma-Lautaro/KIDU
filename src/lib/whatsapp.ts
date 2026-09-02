@@ -4,17 +4,10 @@ export type DatosContacto = {
   marca: string;
   modelo: string;
   talle?: string | null;
-  /** Path de la página de detalle, ej: /zapatilla/abc123 */
   path: string;
-  /** Origin a usar para el link. Si no se pasa, usa NEXT_PUBLIC_SITE_URL. */
   origin?: string;
 };
 
-/**
- * Arma el link wa.me con el mensaje precargado.
- * Si no hay número configurado devuelve null, para que el botón se muestre
- * deshabilitado en vez de abrir un WhatsApp roto.
- */
 export function linkWhatsApp({
   marca,
   modelo,

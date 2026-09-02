@@ -23,7 +23,6 @@ type Props = {
   facetas: Facetas;
   filtros: FiltrosCatalogo;
   total: number;
-  /** La grilla de tarjetas, renderizada en el servidor. */
   children: React.ReactNode;
 };
 
@@ -43,7 +42,6 @@ export function ControlesCatalogo({ facetas, filtros, total, children }: Props) 
   const [max, setMax] = useState(filtros.precioMax?.toString() ?? "");
   const montado = useRef(false);
 
-  // Sincroniza los inputs cuando la URL cambia por fuera (atrás/adelante).
   useEffect(() => {
     setTexto(filtros.q);
     setMin(filtros.precioMin?.toString() ?? "");
@@ -51,14 +49,12 @@ export function ControlesCatalogo({ facetas, filtros, total, children }: Props) 
   }, [filtros.q, filtros.precioMin, filtros.precioMax]);
 
   function navegar(cambios: Partial<FiltrosCatalogo>) {
-    // Cualquier cambio de filtro vuelve a la página 1.
     const siguiente = { ...filtros, ...cambios, pagina: 1 };
     startTransition(() => {
       router.push(`/${aQueryString(siguiente)}#catalogo`, { scroll: false });
     });
   }
 
-  // Búsqueda y precio se aplican con delay, para no navegar en cada tecla.
   useEffect(() => {
     if (!montado.current) {
       montado.current = true;

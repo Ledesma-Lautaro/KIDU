@@ -21,11 +21,6 @@ function refrescarVistas(id?: string) {
   if (id) revalidatePath(`/zapatilla/${id}`);
 }
 
-/**
- * Convierte los errores de zod en un mapa campo -> mensaje.
- * Para errores dentro de arrays (imagenes.0, talles.2.talle) guarda además el
- * campo raíz, que es el que el formulario sabe pintar.
- */
 function aMapaDeErrores(issues: { path: PropertyKey[]; message: string }[]) {
   const campos: Record<string, string> = {};
   for (const issue of issues) {
@@ -61,8 +56,6 @@ export async function guardarZapatilla(
 
   try {
     if (id) {
-      // Los talles se reemplazan enteros: es más simple y evita estados raros
-      // cuando se renombra o se borra un talle desde el formulario.
       const [actualizada] = await prisma.$transaction([
         prisma.zapatilla.update({ where: { id }, data: datos }),
         prisma.talle.deleteMany({ where: { zapatillaId: id } }),
@@ -88,14 +81,12 @@ export async function guardarZapatilla(
   }
 }
 
-/** Soft delete: saca el modelo del catálogo sin perder los datos. */
 export async function alternarActivo(id: string, activo: boolean) {
   await exigirAdmin();
   await prisma.zapatilla.update({ where: { id }, data: { activo } });
   refrescarVistas(id);
 }
 
-/** Baja definitiva: borra la fila y también las imágenes del Blob. */
 export async function eliminarZapatilla(id: string) {
   await exigirAdmin();
 
@@ -107,8 +98,6 @@ export async function eliminarZapatilla(id: string) {
   await prisma.zapatilla.delete({ where: { id } });
 
   if (zapatilla?.imagenes.length) {
-    // Si falla el borrado en Blob no revertimos: la fila ya no existe y una
-    // imagen huérfana no rompe nada.
     try {
       await del(zapatilla.imagenes);
     } catch (error) {
@@ -131,8 +120,6 @@ export async function iniciarSesion(
     });
     return null;
   } catch (error) {
-    // next-auth relanza un error especial para hacer el redirect; hay que
-    // dejarlo pasar o el login queda colgado.
     if (
       error &&
       typeof error === "object" &&

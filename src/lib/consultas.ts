@@ -21,7 +21,6 @@ function construirWhere(f: FiltrosCatalogo): Prisma.ZapatillaWhereInput {
     };
   }
 
-  // "Talle disponible": al menos un talle de la lista con stock.
   if (f.talles.length) {
     where.talles = { some: { talle: { in: f.talles }, stock: true } };
   }
@@ -63,7 +62,6 @@ export async function buscarZapatillas(f: FiltrosCatalogo) {
   };
 }
 
-/** Opciones para armar los filtros, calculadas sobre el catálogo activo. */
 export async function obtenerFacetas() {
   const [marcas, talles, rango] = await Promise.all([
     prisma.zapatilla.findMany({

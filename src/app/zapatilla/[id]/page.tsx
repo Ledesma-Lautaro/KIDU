@@ -12,7 +12,6 @@ import { formatearPrecio } from "@/lib/format";
 
 type Props = { params: Promise<{ id: string }> };
 
-/** Devuelve null si la DB no está disponible, en vez de romper el render. */
 async function buscarSegura(id: string) {
   try {
     return await obtenerZapatilla(id);

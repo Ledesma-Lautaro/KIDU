@@ -1,9 +1,3 @@
-/**
- * Genera las imágenes de demo que usa `npm run db:seed`.
- * Son SVGs livianos, sin dependencias externas, para poder ver el diseño del
- * catálogo antes de tener fotos reales. Se corre una sola vez:
- *   node scripts/generar-placeholders.mjs
- */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -18,7 +12,6 @@ const PALETAS = [
   { fondo: "#ffffff", zapatilla: "#a97ff8", detalle: "#0a0a0b" },
 ];
 
-/** Silueta lateral de zapatilla, dibujada a mano sobre un lienzo de 800x800. */
 const CUERPO =
   "M96 566c0-38 26-59 70-68l104-22c33-7 58-22 80-46l84-92c26-28 55-40 92-36l70 8c30 3 49 19 58 45l24 68c9 26 28 43 55 51l70 20c34 10 51 30 51 60v34H96z";
 const SUELA =

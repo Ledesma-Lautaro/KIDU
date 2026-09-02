@@ -6,10 +6,6 @@ import { useCallback, useRef, useState } from "react";
 const MAX_IMAGENES = 10;
 const LADO_MAXIMO = 1600;
 
-/**
- * Redimensiona y reencoda a WebP en el browser antes de subir.
- * Evita mandar fotos de 8 MB del celular y hace que el catálogo cargue liviano.
- */
 async function optimizar(archivo: File): Promise<File> {
   if (!archivo.type.startsWith("image/")) return archivo;
 
@@ -40,7 +36,6 @@ async function optimizar(archivo: File): Promise<File> {
       type: "image/webp",
     });
   } catch {
-    // Si el browser no puede procesarla, la mandamos tal cual.
     return archivo;
   }
 }

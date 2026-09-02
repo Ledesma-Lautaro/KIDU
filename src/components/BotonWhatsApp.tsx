@@ -20,7 +20,6 @@ function IconoWhatsApp({ className }: { className?: string }) {
 type Props = {
   marca: string;
   modelo: string;
-  /** Path de la página de detalle, ej: /zapatilla/abc */
   path: string;
   talle?: string | null;
   variante?: "tarjeta" | "detalle";
@@ -35,8 +34,6 @@ export function BotonWhatsApp({
   variante = "tarjeta",
   className = "",
 }: Props) {
-  // El origin real solo se conoce en el browser; en SSR caemos a
-  // NEXT_PUBLIC_SITE_URL para que el link ya venga bien en el HTML.
   const [origin, setOrigin] = useState<string | undefined>(undefined);
   useEffect(() => setOrigin(window.location.origin), []);
 

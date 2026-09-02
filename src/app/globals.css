@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-/* ─────────────────────────────────────────────────────────────
-   Design tokens — KIDU
-   Paleta: blanco, negro y violeta #8a50f5.
-   ───────────────────────────────────────────────────────────── */
 @theme {
   --color-tinta: #0a0a0b;
   --color-tinta-suave: #16161a;
@@ -39,7 +35,6 @@
     color: #ffffff;
   }
 
-  /* Foco visible y coherente en toda la app. */
   :focus-visible {
     outline: 2px solid var(--color-violeta);
     outline-offset: 2px;
@@ -48,7 +43,6 @@
 }
 
 @layer components {
-  /* Títulos de sección: negro, condensado, en caja alta. */
   .titulo-display {
     font-family: var(--font-display);
     text-transform: uppercase;
@@ -57,7 +51,6 @@
   }
 }
 
-/* Oculta las flechas de los inputs number en el admin. */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -67,7 +60,6 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-/* Scrollbar discreta en la galería horizontal. */
 .scrollbar-fina::-webkit-scrollbar {
   height: 6px;
 }

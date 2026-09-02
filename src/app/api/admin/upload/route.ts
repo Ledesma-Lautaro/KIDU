@@ -4,7 +4,6 @@ import { put } from "@vercel/blob";
 import { auth } from "@/auth";
 
 const TIPOS_PERMITIDOS = ["image/jpeg", "image/png", "image/webp", "image/avif"];
-/** Vercel corta los request bodies en 4.5 MB; el cliente ya redimensiona antes. */
 const MAX_BYTES = 4 * 1024 * 1024;
 
 export async function POST(request: Request) {

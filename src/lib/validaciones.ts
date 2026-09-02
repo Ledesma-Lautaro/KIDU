@@ -25,8 +25,6 @@ export const zapatillaSchema = z
         z
           .string()
           .trim()
-          // Aceptamos URLs de Blob (https://…) y rutas locales (/demo/1.svg),
-          // que se usan para los datos de ejemplo.
           .refine(
             (v) => /^https?:\/\//.test(v) || v.startsWith("/"),
             "URL de imagen inválida"
