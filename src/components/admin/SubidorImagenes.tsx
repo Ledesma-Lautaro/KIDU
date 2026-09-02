@@ -6,38 +6,47 @@ import { useCallback, useRef, useState } from "react";
 const MAX_IMAGENES = 10;
 const LADO_MAXIMO = 1600;
 
-async function optimizar(archivo: File): Promise<File> {
-  if (!archivo.type.startsWith("image/")) return archivo;
+class ImagenIlegible extends Error {
+  constructor(nombre: string) {
+    super(
+      `"${nombre}" no se puede leer. Si la sacaste con un iPhone puede estar en HEIC: exportala o convertila a JPG y volvé a intentar.`
+    );
+    this.name = "ImagenIlegible";
+  }
+}
 
+async function optimizar(archivo: File): Promise<File> {
+  let bitmap: ImageBitmap;
   try {
-    const bitmap = await createImageBitmap(archivo, {
+    bitmap = await createImageBitmap(archivo, {
       imageOrientation: "from-image",
     });
-    const escala = Math.min(
-      1,
-      LADO_MAXIMO / Math.max(bitmap.width, bitmap.height)
-    );
-
-    const canvas = document.createElement("canvas");
-    canvas.width = Math.round(bitmap.width * escala);
-    canvas.height = Math.round(bitmap.height * escala);
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return archivo;
-    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-    bitmap.close();
-
-    const blob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob(resolve, "image/webp", 0.85)
-    );
-    if (!blob || blob.size >= archivo.size) return archivo;
-
-    return new File([blob], `${archivo.name.replace(/\.[^.]+$/, "")}.webp`, {
-      type: "image/webp",
-    });
   } catch {
-    return archivo;
+    throw new ImagenIlegible(archivo.name);
   }
+
+  const escala = Math.min(
+    1,
+    LADO_MAXIMO / Math.max(bitmap.width, bitmap.height)
+  );
+
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(bitmap.width * escala);
+  canvas.height = Math.round(bitmap.height * escala);
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new ImagenIlegible(archivo.name);
+  ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close();
+
+  const blob = await new Promise<Blob | null>((resolve) =>
+    canvas.toBlob(resolve, "image/webp", 0.85)
+  );
+  if (!blob) throw new ImagenIlegible(archivo.name);
+
+  return new File([blob], `${archivo.name.replace(/\.[^.]+$/, "")}.webp`, {
+    type: "image/webp",
+  });
 }
 
 export function SubidorImagenes({
@@ -56,9 +65,7 @@ export function SubidorImagenes({
 
   const subir = useCallback(
     async (archivos: FileList | File[]) => {
-      const lista = Array.from(archivos).filter((a) =>
-        a.type.startsWith("image/")
-      );
+      const lista = Array.from(archivos);
       if (lista.length === 0) return;
 
       const espacio = MAX_IMAGENES - imagenes.length;
