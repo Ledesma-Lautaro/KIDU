@@ -20,6 +20,7 @@ function IconoWhatsApp({ className }: { className?: string }) {
 type Props = {
   marca: string;
   modelo: string;
+  color?: string | null;
   path: string;
   talle?: string | null;
   variante?: "tarjeta" | "detalle";
@@ -29,6 +30,7 @@ type Props = {
 export function BotonWhatsApp({
   marca,
   modelo,
+  color,
   path,
   talle,
   variante = "tarjeta",
@@ -37,7 +39,7 @@ export function BotonWhatsApp({
   const [origin, setOrigin] = useState<string | undefined>(undefined);
   useEffect(() => setOrigin(window.location.origin), []);
 
-  const href = linkWhatsApp({ marca, modelo, talle, path, origin });
+  const href = linkWhatsApp({ marca, modelo, color, talle, path, origin });
 
   const esDetalle = variante === "detalle";
   const base = esDetalle

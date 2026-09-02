@@ -14,6 +14,7 @@ model Zapatilla {
   marca       String
   modelo      String
   categoria   String
+  color       String?
   precio      Int
   descripcion String?
   imagenes    String[] @default([])
@@ -26,6 +27,7 @@ model Zapatilla {
   @@index([activo])
   @@index([marca])
   @@index([categoria])
+  @@index([marca, modelo])
   @@index([precio])
 }
 

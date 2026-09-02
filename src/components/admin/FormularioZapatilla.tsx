@@ -14,6 +14,7 @@ export type ValoresIniciales = {
   marca: string;
   modelo: string;
   categoria: string;
+  color: string;
   precio: string;
   descripcion: string;
   imagenes: string[];
@@ -25,6 +26,7 @@ export const VALORES_VACIOS: ValoresIniciales = {
   marca: "",
   modelo: "",
   categoria: CATEGORIAS[0],
+  color: "",
   precio: "",
   descripcion: "",
   imagenes: [],
@@ -35,9 +37,11 @@ export const VALORES_VACIOS: ValoresIniciales = {
 export function FormularioZapatilla({
   inicial = VALORES_VACIOS,
   marcasExistentes = [],
+  coloresExistentes = [],
 }: {
   inicial?: ValoresIniciales;
   marcasExistentes?: string[];
+  coloresExistentes?: string[];
 }) {
   const router = useRouter();
   const [guardando, startTransition] = useTransition();
@@ -70,6 +74,7 @@ export function FormularioZapatilla({
       marca: valores.marca,
       modelo: valores.modelo,
       categoria: valores.categoria,
+      color: valores.color,
       precio: valores.precio === "" ? NaN : Number(valores.precio),
       descripcion: valores.descripcion,
       imagenes: valores.imagenes,
@@ -163,6 +168,25 @@ export function FormularioZapatilla({
               placeholder="Air Max 90"
               className={entrada(errores.modelo)}
             />
+          </Campo>
+
+          <Campo
+            etiqueta="Color (opcional)"
+            error={errores.color}
+            ayuda="Para modelos que van en varios colores. Ej: Blanco, Negro, Verde"
+          >
+            <input
+              value={valores.color}
+              onChange={(e) => set("color", e.target.value)}
+              list="colores-existentes"
+              placeholder="Blanco"
+              className={entrada(errores.color)}
+            />
+            <datalist id="colores-existentes">
+              {coloresExistentes.map((c) => (
+                <option key={c} value={c} />
+              ))}
+            </datalist>
           </Campo>
 
           <Campo etiqueta="Categoría" error={errores.categoria}>

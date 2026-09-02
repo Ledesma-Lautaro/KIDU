@@ -112,7 +112,12 @@ export default async function PaginaListado({
                   <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-gris">
                     {z.marca} · {labelCategoria(z.categoria)}
                   </p>
-                  <p className="truncate font-semibold text-tinta">{z.modelo}</p>
+                  <p className="truncate font-semibold text-tinta">
+                    {z.modelo}
+                    {z.color && (
+                      <span className="ml-2 font-normal text-gris">{z.color}</span>
+                    )}
+                  </p>
                   <p className="mt-0.5 text-sm text-gris">
                     {formatearPrecio(z.precio)}
                     {z.talles.length > 0 && (

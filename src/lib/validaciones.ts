@@ -14,6 +14,7 @@ export const zapatillaSchema = z
     marca: z.string().trim().min(1, "Poné la marca").max(60),
     modelo: z.string().trim().min(1, "Poné el modelo").max(140),
     categoria: z.enum(CATEGORIAS, { message: "Elegí una categoría" }),
+    color: z.string().trim().max(40).optional(),
     precio: z
       .number({ message: "El precio tiene que ser un número" })
       .int("El precio va sin decimales")

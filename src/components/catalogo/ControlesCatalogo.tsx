@@ -14,6 +14,7 @@ import { formatearPrecio, formatearTalle } from "@/lib/format";
 
 export type Facetas = {
   marcas: string[];
+  colores: string[];
   talles: number[];
   precioMin: number;
   precioMax: number;
@@ -126,6 +127,24 @@ export function ControlesCatalogo({ facetas, filtros, total, children }: Props) 
         </Grupo>
       )}
 
+      {facetas.colores.length > 0 && (
+        <Grupo titulo="Color">
+          <div className="flex flex-wrap gap-2">
+            {facetas.colores.map((col) => (
+              <Chip
+                key={col}
+                activo={filtros.colores.includes(col)}
+                onClick={() =>
+                  navegar({ colores: alternar([...filtros.colores], col) })
+                }
+              >
+                {col}
+              </Chip>
+            ))}
+          </div>
+        </Grupo>
+      )}
+
       <Grupo titulo="Precio">
         <div className="flex items-center gap-2">
           <input
@@ -181,6 +200,7 @@ export function ControlesCatalogo({ facetas, filtros, total, children }: Props) 
             navegar({
               marcas: [],
               categorias: [],
+              colores: [],
               talles: [],
               precioMin: null,
               precioMax: null,

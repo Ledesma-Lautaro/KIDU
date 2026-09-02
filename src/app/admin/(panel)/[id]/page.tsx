@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Editar zapatilla" };
 export default async function PaginaEditar({ params }: Props) {
   const { id } = await params;
 
-  const [zapatilla, marcas] = await Promise.all([
+  const [zapatilla, marcas, colores] = await Promise.all([
     prisma.zapatilla
       .findUnique({
         where: { id },
@@ -23,6 +23,14 @@ export default async function PaginaEditar({ params }: Props) {
         distinct: ["marca"],
         select: { marca: true },
         orderBy: { marca: "asc" },
+      })
+      .catch(() => []),
+    prisma.zapatilla
+      .findMany({
+        where: { color: { not: null } },
+        distinct: ["color"],
+        select: { color: true },
+        orderBy: { color: "asc" },
       })
       .catch(() => []),
   ]);
@@ -52,11 +60,15 @@ export default async function PaginaEditar({ params }: Props) {
 
       <FormularioZapatilla
         marcasExistentes={marcas.map((m) => m.marca)}
+        coloresExistentes={colores
+          .map((c) => c.color)
+          .filter((c): c is string => Boolean(c))}
         inicial={{
           id: zapatilla.id,
           marca: zapatilla.marca,
           modelo: zapatilla.modelo,
           categoria: zapatilla.categoria,
+          color: zapatilla.color ?? "",
           precio: String(zapatilla.precio),
           descripcion: zapatilla.descripcion ?? "",
           imagenes: zapatilla.imagenes,

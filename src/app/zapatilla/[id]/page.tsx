@@ -6,7 +6,12 @@ import { Footer } from "@/components/site/Footer";
 import { Galeria } from "@/components/detalle/Galeria";
 import { PanelContacto } from "@/components/detalle/PanelContacto";
 import { TarjetaZapatilla } from "@/components/catalogo/TarjetaZapatilla";
-import { obtenerRelacionadas, obtenerZapatilla } from "@/lib/consultas";
+import {
+  obtenerOtrosColores,
+  obtenerRelacionadas,
+  obtenerZapatilla,
+} from "@/lib/consultas";
+import { OtrosColores } from "@/components/detalle/OtrosColores";
 import { labelCategoria } from "@/lib/categorias";
 import { formatearPrecio } from "@/lib/format";
 
@@ -43,10 +48,12 @@ export default async function PaginaDetalle({ params }: Props) {
   const zapatilla = await buscarSegura(id);
   if (!zapatilla) notFound();
 
-  const relacionadas = await obtenerRelacionadas(
-    zapatilla.id,
-    zapatilla.categoria
-  ).catch(() => []);
+  const [relacionadas, hermanos] = await Promise.all([
+    obtenerRelacionadas(zapatilla.id, zapatilla.categoria).catch(() => []),
+    obtenerOtrosColores(zapatilla.id, zapatilla.marca, zapatilla.modelo).catch(
+      () => []
+    ),
+  ]);
 
   const disponibles = zapatilla.talles.filter((t) => t.stock).length;
 
@@ -90,6 +97,10 @@ export default async function PaginaDetalle({ params }: Props) {
               {zapatilla.modelo}
             </h1>
 
+            {zapatilla.color && (
+              <p className="mt-2 text-lg text-gris">{zapatilla.color}</p>
+            )}
+
             <p className="titulo-display mt-6 text-4xl text-violeta">
               {formatearPrecio(zapatilla.precio)}
             </p>
@@ -108,11 +119,18 @@ export default async function PaginaDetalle({ params }: Props) {
               </p>
             )}
 
+            {hermanos.length > 0 && (
+              <div className="mt-8">
+                <OtrosColores actual={zapatilla.color} hermanos={hermanos} />
+              </div>
+            )}
+
             <div className="mt-10">
               <PanelContacto
                 id={zapatilla.id}
                 marca={zapatilla.marca}
                 modelo={zapatilla.modelo}
+                color={zapatilla.color}
                 talles={zapatilla.talles}
               />
             </div>

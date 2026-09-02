@@ -14,6 +14,7 @@ export type FiltrosCatalogo = {
   q: string;
   marcas: string[];
   categorias: string[];
+  colores: string[];
   precioMin: number | null;
   precioMax: number | null;
   talles: number[];
@@ -48,6 +49,7 @@ export function parsearFiltros(params: ParamsCrudos): FiltrosCatalogo {
     q: comoTexto(params.q).slice(0, 80),
     marcas: comoLista(params.marca).slice(0, 20),
     categorias: comoLista(params.categoria).filter(esCategoriaValida),
+    colores: comoLista(params.color).slice(0, 20),
     precioMin: comoNumero(params.min),
     precioMax: comoNumero(params.max),
     talles: comoLista(params.talle)
@@ -64,6 +66,7 @@ export function aQueryString(f: Partial<FiltrosCatalogo>): string {
   if (f.q) p.set("q", f.q);
   if (f.marcas?.length) p.set("marca", f.marcas.join(","));
   if (f.categorias?.length) p.set("categoria", f.categorias.join(","));
+  if (f.colores?.length) p.set("color", f.colores.join(","));
   if (f.precioMin != null) p.set("min", String(f.precioMin));
   if (f.precioMax != null) p.set("max", String(f.precioMax));
   if (f.talles?.length) p.set("talle", f.talles.join(","));
@@ -77,6 +80,7 @@ export function contarFiltrosActivos(f: FiltrosCatalogo): number {
   return (
     f.marcas.length +
     f.categorias.length +
+    f.colores.length +
     f.talles.length +
     (f.precioMin != null || f.precioMax != null ? 1 : 0)
   );

@@ -12,7 +12,8 @@ export function TarjetaZapatilla({
   zapatilla: ZapatillaConTalles;
   prioridad?: boolean;
 }) {
-  const { id, marca, modelo, categoria, precio, imagenes, talles } = zapatilla;
+  const { id, marca, modelo, categoria, color, precio, imagenes, talles } =
+    zapatilla;
   const portada = imagenes[0];
   const disponibles = talles.filter((t) => t.stock);
   const agotada = talles.length > 0 && disponibles.length === 0;
@@ -54,6 +55,7 @@ export function TarjetaZapatilla({
           <h3 className="mt-1 line-clamp-2 text-base font-semibold leading-snug text-tinta">
             {modelo}
           </h3>
+          {color && <p className="mt-0.5 text-sm text-gris">{color}</p>}
         </div>
 
         <p className="titulo-display text-2xl text-tinta">
@@ -76,6 +78,7 @@ export function TarjetaZapatilla({
         <BotonWhatsApp
           marca={marca}
           modelo={modelo}
+          color={color}
           path={`/zapatilla/${id}`}
         />
       </div>

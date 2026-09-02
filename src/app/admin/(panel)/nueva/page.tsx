@@ -5,13 +5,23 @@ import { prisma } from "@/lib/prisma";
 export const metadata: Metadata = { title: "Nueva zapatilla" };
 
 export default async function PaginaNueva() {
-  const marcas = await prisma.zapatilla
-    .findMany({
-      distinct: ["marca"],
-      select: { marca: true },
-      orderBy: { marca: "asc" },
-    })
-    .catch(() => []);
+  const [marcas, colores] = await Promise.all([
+    prisma.zapatilla
+      .findMany({
+        distinct: ["marca"],
+        select: { marca: true },
+        orderBy: { marca: "asc" },
+      })
+      .catch(() => []),
+    prisma.zapatilla
+      .findMany({
+        where: { color: { not: null } },
+        distinct: ["color"],
+        select: { color: true },
+        orderBy: { color: "asc" },
+      })
+      .catch(() => []),
+  ]);
 
   return (
     <div>
@@ -23,7 +33,12 @@ export default async function PaginaNueva() {
         </p>
       </div>
 
-      <FormularioZapatilla marcasExistentes={marcas.map((m) => m.marca)} />
+      <FormularioZapatilla
+        marcasExistentes={marcas.map((m) => m.marca)}
+        coloresExistentes={colores
+          .map((c) => c.color)
+          .filter((c): c is string => Boolean(c))}
+      />
     </div>
   );
 }

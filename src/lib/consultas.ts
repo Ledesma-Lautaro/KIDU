@@ -13,6 +13,7 @@ function construirWhere(f: FiltrosCatalogo): Prisma.ZapatillaWhereInput {
   }
   if (f.marcas.length) where.marca = { in: f.marcas };
   if (f.categorias.length) where.categoria = { in: f.categorias };
+  if (f.colores.length) where.color = { in: f.colores };
 
   if (f.precioMin !== null || f.precioMax !== null) {
     where.precio = {
@@ -63,12 +64,18 @@ export async function buscarZapatillas(f: FiltrosCatalogo) {
 }
 
 export async function obtenerFacetas() {
-  const [marcas, talles, rango] = await Promise.all([
+  const [marcas, colores, talles, rango] = await Promise.all([
     prisma.zapatilla.findMany({
       where: { activo: true },
       distinct: ["marca"],
       select: { marca: true },
       orderBy: { marca: "asc" },
+    }),
+    prisma.zapatilla.findMany({
+      where: { activo: true, color: { not: null } },
+      distinct: ["color"],
+      select: { color: true },
+      orderBy: { color: "asc" },
     }),
     prisma.talle.findMany({
       where: { stock: true, zapatilla: { activo: true } },
@@ -85,6 +92,7 @@ export async function obtenerFacetas() {
 
   return {
     marcas: marcas.map((m) => m.marca),
+    colores: colores.map((c) => c.color).filter((c): c is string => Boolean(c)),
     talles: talles.map((t) => t.talle),
     precioMin: rango._min.precio ?? 0,
     precioMax: rango._max.precio ?? 0,
@@ -108,5 +116,17 @@ export async function obtenerRelacionadas(
     orderBy: { createdAt: "desc" },
     take: cantidad,
     include: { talles: { orderBy: { talle: "asc" } } },
+  });
+}
+
+export async function obtenerOtrosColores(
+  id: string,
+  marca: string,
+  modelo: string
+) {
+  return prisma.zapatilla.findMany({
+    where: { activo: true, marca, modelo, id: { not: id } },
+    orderBy: { color: "asc" },
+    select: { id: true, color: true, imagenes: true },
   });
 }

@@ -3,6 +3,7 @@ import { mensajeWhatsApp, siteConfig } from "./site";
 export type DatosContacto = {
   marca: string;
   modelo: string;
+  color?: string | null;
   talle?: string | null;
   path: string;
   origin?: string;
@@ -11,6 +12,7 @@ export type DatosContacto = {
 export function linkWhatsApp({
   marca,
   modelo,
+  color,
   talle,
   path,
   origin,
@@ -19,7 +21,13 @@ export function linkWhatsApp({
   if (!numero) return null;
 
   const base = (origin ?? siteConfig.url).replace(/\/$/, "");
-  const texto = mensajeWhatsApp({ marca, modelo, talle, url: `${base}${path}` });
+  const texto = mensajeWhatsApp({
+    marca,
+    modelo,
+    color,
+    talle,
+    url: `${base}${path}`,
+  });
 
   return `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
 }

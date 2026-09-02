@@ -48,10 +48,11 @@ export async function guardarZapatilla(
     };
   }
 
-  const { talles, descripcion, ...zapatilla } = parseo.data;
+  const { talles, descripcion, color, ...zapatilla } = parseo.data;
   const datos = {
     ...zapatilla,
     descripcion: descripcion?.trim() ? descripcion.trim() : null,
+    color: color?.trim() ? color.trim() : null,
   };
 
   try {

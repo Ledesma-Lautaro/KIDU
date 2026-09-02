@@ -9,14 +9,17 @@ export const siteConfig = {
 export function mensajeWhatsApp({
   marca,
   modelo,
+  color,
   talle,
   url,
 }: {
   marca: string;
   modelo: string;
+  color?: string | null;
   talle?: string | null;
   url: string;
 }): string {
+  const conColor = color ? ` ${color}` : "";
   const conTalle = talle ? `, talle ${talle}` : "";
-  return `Hola! Estoy interesado/a en las ${marca} ${modelo}${conTalle}, las vi en ${url}. ¿Están disponibles?`;
+  return `Hola! Estoy interesado/a en las ${marca} ${modelo}${conColor}${conTalle}, las vi en ${url}. ¿Están disponibles?`;
 }

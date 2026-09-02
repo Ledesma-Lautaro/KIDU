@@ -10,11 +10,13 @@ export function PanelContacto({
   id,
   marca,
   modelo,
+  color,
   talles,
 }: {
   id: string;
   marca: string;
   modelo: string;
+  color?: string | null;
   talles: TalleVista[];
 }) {
   const [elegido, setElegido] = useState<number | null>(null);
@@ -71,6 +73,7 @@ export function PanelContacto({
       <BotonWhatsApp
         marca={marca}
         modelo={modelo}
+        color={color}
         path={`/zapatilla/${id}`}
         talle={elegido !== null ? formatearTalle(elegido) : null}
         variante="detalle"
