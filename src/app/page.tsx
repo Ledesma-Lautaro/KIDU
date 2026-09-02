@@ -4,6 +4,9 @@ import { ControlesCatalogo } from "@/components/catalogo/ControlesCatalogo";
 import { TarjetaZapatilla } from "@/components/catalogo/TarjetaZapatilla";
 import { Paginacion } from "@/components/catalogo/Paginacion";
 import { AvisoSinBaseDeDatos } from "@/components/site/AvisoSinBaseDeDatos";
+import { Marquesina } from "@/components/site/Marquesina";
+import { Drip } from "@/components/site/Drip";
+import { Constelacion } from "@/components/marca/Constelacion";
 import { buscarZapatillas, obtenerFacetas } from "@/lib/consultas";
 import { parsearFiltros } from "@/lib/filtros";
 import { siteConfig } from "@/lib/site";
@@ -37,7 +40,7 @@ export default async function PaginaCatalogo({
 
         <section
           id="catalogo"
-          className="mx-auto max-w-7xl scroll-mt-20 px-4 py-14 sm:px-6 lg:px-8"
+          className="mx-auto max-w-7xl scroll-mt-20 px-4 pb-14 pt-20 sm:px-6 lg:px-8"
         >
           {!datos || !facetas ? (
             <AvisoSinBaseDeDatos />
@@ -75,34 +78,64 @@ export default async function PaginaCatalogo({
 
 function Hero({ total, marcas }: { total: number; marcas: number }) {
   return (
-    <section className="relative overflow-hidden border-b border-borde bg-white">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-32 -top-32 size-[34rem] rounded-full bg-violeta/20 blur-3xl"
-      />
+    <section className="relative">
+      <div className="grano relative overflow-hidden bg-tinta text-white">
+        <div
+          aria-hidden="true"
+          className="anim-latir pointer-events-none absolute -left-24 top-[-10%] size-[38rem] rounded-full bg-violeta-electrico/30 blur-[110px]"
+        />
+        <div
+          aria-hidden="true"
+          style={{ animationDelay: "2.5s" }}
+          className="anim-latir pointer-events-none absolute -right-32 bottom-[-25%] size-[34rem] rounded-full bg-violeta-profundo/40 blur-[120px]"
+        />
+        <div
+          aria-hidden="true"
+          style={{ animationDelay: "1.2s" }}
+          className="anim-latir pointer-events-none absolute left-1/2 top-1/3 size-[24rem] rounded-full bg-violeta-neon/15 blur-[100px]"
+        />
 
-      <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-        <p className="inline-flex items-center gap-2 rounded-full border border-borde bg-white px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-gris">
-          <span className="size-1.5 rounded-full bg-violeta" />
-          {siteConfig.tagline}
-        </p>
+        <Constelacion />
 
-        <h1 className="titulo-display mt-6 max-w-4xl text-[clamp(2.5rem,9vw,6.5rem)]">
-          Zapatillas que
-          <span className="text-violeta"> hablan</span> por vos
-        </h1>
+        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+          <p className="anim-entrar inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-violeta-neon backdrop-blur">
+            <span className="size-1.5 rounded-full bg-violeta-neon" />
+            {siteConfig.tagline}
+          </p>
 
-        <p className="mt-6 max-w-xl text-base text-gris sm:text-lg">
-          Mirá el catálogo, elegí tu talle y escribinos por WhatsApp. Sin
-          vueltas, sin carrito, sin registro.
-        </p>
+          <h1
+            className="titulo-display anim-entrar mt-6 max-w-4xl text-[clamp(2.75rem,10vw,7rem)]"
+            style={{ animationDelay: "0.1s" }}
+          >
+            <span className="block">Zapatillas</span>
+            <span className="block bg-gradient-to-r from-violeta-neon via-violeta to-violeta-electrico bg-clip-text text-transparent">
+              con drip
+            </span>
+            <span className="block">de verdad</span>
+          </h1>
 
-        <dl className="mt-10 flex flex-wrap items-center gap-x-10 gap-y-4">
-          <Dato valor={total} etiqueta={total === 1 ? "modelo" : "modelos"} />
-          <Dato valor={marcas} etiqueta={marcas === 1 ? "marca" : "marcas"} />
-          <Dato valor="ARS" etiqueta="precios en pesos" />
-        </dl>
+          <p
+            className="anim-entrar mt-7 max-w-xl text-base text-white/60 sm:text-lg"
+            style={{ animationDelay: "0.2s" }}
+          >
+            Mirá el catálogo, elegí tu talle y escribinos por WhatsApp. Sin
+            vueltas, sin carrito, sin registro.
+          </p>
+
+          <dl
+            className="anim-entrar mt-12 flex flex-wrap items-center gap-x-10 gap-y-4"
+            style={{ animationDelay: "0.3s" }}
+          >
+            <Dato valor={total} etiqueta={total === 1 ? "modelo" : "modelos"} />
+            <Dato valor={marcas} etiqueta={marcas === 1 ? "marca" : "marcas"} />
+            <Dato valor="ARS" etiqueta="precios en pesos" />
+          </dl>
+        </div>
+
       </div>
+
+      <Marquesina invertida />
+      <Drip className="-mt-px text-violeta" />
     </section>
   );
 }
@@ -118,7 +151,7 @@ function Dato({
     <div>
       <dt className="sr-only">{etiqueta}</dt>
       <dd className="titulo-display text-3xl sm:text-4xl">{valor}</dd>
-      <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.16em] text-gris">
+      <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.16em] text-white/40">
         {etiqueta}
       </p>
     </div>

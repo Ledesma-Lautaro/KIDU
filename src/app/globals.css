@@ -11,6 +11,10 @@
   --color-violeta-claro: #a97ff8;
   --color-violeta-oscuro: #6d33d6;
   --color-violeta-tenue: #f3ecfe;
+  --color-violeta-neon: #c4a3ff;
+  --color-violeta-electrico: #7c2df0;
+  --color-violeta-profundo: #4a1d9e;
+  --color-violeta-noche: #2a1058;
 
   --font-display: var(--fuente-display), system-ui, sans-serif;
   --font-sans: var(--fuente-sans), system-ui, sans-serif;
@@ -66,4 +70,96 @@ input[type="number"] {
 .scrollbar-fina::-webkit-scrollbar-thumb {
   background: var(--color-borde);
   border-radius: 999px;
+}
+
+@keyframes flotar {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--giro, 0deg));
+  }
+  50% {
+    transform: translateY(-18px) rotate(calc(var(--giro, 0deg) + 3deg));
+  }
+}
+
+@keyframes desplazar {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes latir {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes gotear {
+  0%,
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateY(6px) scaleY(1.14);
+  }
+}
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.anim-flotar {
+  animation: flotar 7s ease-in-out infinite;
+}
+
+.anim-marquesina {
+  animation: desplazar 32s linear infinite;
+}
+
+.anim-latir {
+  animation: latir 5s ease-in-out infinite;
+}
+
+.anim-gotear {
+  animation: gotear 4.5s ease-in-out infinite;
+}
+
+.anim-entrar {
+  animation: entrar 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.grano::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23r)' opacity='0.32'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-flotar,
+  .anim-marquesina,
+  .anim-latir,
+  .anim-gotear,
+  .anim-entrar {
+    animation: none !important;
+  }
 }
