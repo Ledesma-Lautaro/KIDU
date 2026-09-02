@@ -52,8 +52,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ url: blob.url });
   } catch (error) {
     console.error("[upload] Falló la subida a Vercel Blob:", error);
+
+    const detalle =
+      error instanceof Error && error.message.startsWith("Vercel Blob:")
+        ? error.message.slice("Vercel Blob:".length).trim()
+        : null;
+
     return NextResponse.json(
-      { error: "No se pudo subir la imagen." },
+      {
+        error: detalle
+          ? `No se pudo subir la imagen. ${detalle}`
+          : "No se pudo subir la imagen.",
+      },
       { status: 500 }
     );
   }
