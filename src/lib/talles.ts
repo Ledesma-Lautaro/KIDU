@@ -7,13 +7,6 @@ export type FilaTalle = {
   plantilla: number;
 };
 
-/**
- * Los talles se guardan en BR, que es el número que viene marcado en la
- * zapatilla. Todo lo que se muestra al comprador se convierte desde acá.
- *
- * La plantilla no sigue una progresión pareja (hay saltos en 38 y en 43), así
- * que la tabla se carga a mano y no se calcula.
- */
 export const TABLA_TALLES: FilaTalle[] = [
   { br: 34, arg: 35, eur: 36, plantilla: 23.5 },
   { br: 35, arg: 36, eur: 37, plantilla: 24 },
@@ -34,10 +27,6 @@ export type Conversion = {
   enTabla: boolean;
 };
 
-/**
- * Fuera de la tabla (medios talles, o extremos) se cae a la regla
- * ARG = BR + 1 y EUR = BR + 2, y se omite la plantilla en vez de inventarla.
- */
 export function convertir(br: number): Conversion {
   const fila = TABLA_TALLES.find((f) => f.br === br);
   if (fila) {
@@ -50,7 +39,6 @@ export function formatearPlantilla(cm: number): string {
   return `${cm.toString().replace(".", ",")} cm`;
 }
 
-/** "BR 40 · ARG 41 · EUR 42 · 27 cm" */
 export function equivalenciaCompleta(br: number): string {
   const c = convertir(br);
   const partes = [
@@ -62,7 +50,6 @@ export function equivalenciaCompleta(br: number): string {
   return partes.join(" · ");
 }
 
-/** "BR 40 (ARG 41)" — lo que viaja en el mensaje de WhatsApp. */
 export function talleParaMensaje(br: number): string {
   const c = convertir(br);
   return `BR ${formatearTalle(br)} (ARG ${formatearTalle(c.arg)})`;

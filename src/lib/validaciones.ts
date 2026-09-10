@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { CATEGORIAS } from "./categorias";
+import { motivoIncompleta } from "./publicacion";
 
 export const talleSchema = z.object({
   talle: z
@@ -37,6 +38,13 @@ export const zapatillaSchema = z
     activo: z.boolean(),
   })
   .superRefine((datos, ctx) => {
+    if (datos.activo) {
+      const falta = motivoIncompleta(datos);
+      if (falta) {
+        ctx.addIssue({ code: "custom", path: [falta.campo], message: falta.mensaje });
+      }
+    }
+
     const vistos = new Set<number>();
     datos.talles.forEach((t, i) => {
       if (vistos.has(t.talle)) {

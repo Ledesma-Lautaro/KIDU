@@ -36,6 +36,18 @@ export default async function LayoutPanel({
                 Catálogo
               </Link>
               <Link
+                href="/admin/importar"
+                className="text-white/70 hover:text-white"
+              >
+                Importar
+              </Link>
+              <Link
+                href="/admin/planilla"
+                className="text-white/70 hover:text-white"
+              >
+                Planilla
+              </Link>
+              <Link
                 href="/"
                 target="_blank"
                 className="text-white/70 hover:text-white"

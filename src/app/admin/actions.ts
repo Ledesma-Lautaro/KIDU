@@ -2,8 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { del } from "@vercel/blob";
+import { z } from "zod";
 import { auth, signIn, signOut } from "@/auth";
+import { CATEGORIAS } from "@/lib/categorias";
 import { prisma } from "@/lib/prisma";
+import { motivoIncompleta } from "@/lib/publicacion";
 import { zapatillaSchema } from "@/lib/validaciones";
 
 export type Resultado =
@@ -82,10 +85,90 @@ export async function guardarZapatilla(
   }
 }
 
-export async function alternarActivo(id: string, activo: boolean) {
+export type ResultadoSimple = { ok: true } | { ok: false; error: string };
+
+export async function alternarActivo(
+  id: string,
+  activo: boolean
+): Promise<ResultadoSimple> {
   await exigirAdmin();
+
+  if (activo) {
+    const ficha = await prisma.zapatilla.findUnique({
+      where: { id },
+      select: { precio: true, imagenes: true, talles: { select: { stock: true } } },
+    });
+    if (!ficha) return { ok: false, error: "La zapatilla ya no existe." };
+    const falta = motivoIncompleta(ficha);
+    if (falta) return { ok: false, error: falta.mensaje };
+  }
+
   await prisma.zapatilla.update({ where: { id }, data: { activo } });
   refrescarVistas(id);
+  return { ok: true };
+}
+
+const cambioRapidoSchema = z.object({
+  modelo: z.string().trim().min(1, "Poné el modelo").max(140),
+  color: z.string().trim().max(40),
+  categoria: z.enum(CATEGORIAS, { message: "Elegí una categoría" }),
+  precio: z.number().int("Sin decimales").min(0).max(1_000_000_000),
+  talles: z.array(z.number().positive().max(70)).max(40),
+  activo: z.boolean(),
+});
+
+export type CambioRapido = z.infer<typeof cambioRapidoSchema>;
+
+export async function guardarCambioRapido(
+  id: string,
+  crudo: unknown
+): Promise<ResultadoSimple> {
+  await exigirAdmin();
+
+  const parseo = cambioRapidoSchema.safeParse(crudo);
+  if (!parseo.success) {
+    return { ok: false, error: parseo.error.issues[0]?.message ?? "Datos inválidos" };
+  }
+  const { talles, color, ...resto } = parseo.data;
+
+  const actual = await prisma.zapatilla.findUnique({
+    where: { id },
+    select: { imagenes: true, talles: { select: { talle: true, stock: true } } },
+  });
+  if (!actual) return { ok: false, error: "La zapatilla ya no existe." };
+
+  const stockPrevio = new Map(actual.talles.map((t) => [t.talle, t.stock]));
+  const nuevosTalles = [...new Set(talles)]
+    .sort((a, b) => a - b)
+    .map((talle) => ({ talle, stock: stockPrevio.get(talle) ?? true }));
+
+  if (resto.activo) {
+    const falta = motivoIncompleta({
+      precio: resto.precio,
+      imagenes: actual.imagenes,
+      talles: nuevosTalles,
+    });
+    if (falta) return { ok: false, error: falta.mensaje };
+  }
+
+  try {
+    await prisma.$transaction([
+      prisma.zapatilla.update({
+        where: { id },
+        data: { ...resto, color: color || null },
+      }),
+      prisma.talle.deleteMany({ where: { zapatillaId: id } }),
+      prisma.talle.createMany({
+        data: nuevosTalles.map((t) => ({ ...t, zapatillaId: id })),
+      }),
+    ]);
+  } catch (error) {
+    console.error("[admin] Error en guardado rápido:", error);
+    return { ok: false, error: "No se pudo guardar." };
+  }
+
+  refrescarVistas(id);
+  return { ok: true };
 }
 
 export async function eliminarZapatilla(id: string) {
