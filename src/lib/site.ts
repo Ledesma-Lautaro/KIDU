@@ -1,6 +1,6 @@
 export const siteConfig = {
   nombre: "KIDU",
-  descripcion: "Catálogo de zapatillas — modelos originales, entrega en el día.",
+  descripcion: "Catálogo de zapatillas — modelos originales.",
   tagline: "Sneakers seleccionadas",
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",

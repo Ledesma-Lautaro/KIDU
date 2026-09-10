@@ -48,10 +48,9 @@ export function Footer() {
             <span className="font-semibold text-white">WhatsApp</span>.
           </p>
           <p className="mt-4 text-xs text-white/30">
-            © {new Date().getFullYear()} {siteConfig.nombre}. Precios en pesos
-            argentinos.{" "}
+            © {new Date().getFullYear()} {siteConfig.nombre}. 
             <Link href="/admin" className="underline hover:text-white/60">
-              Admin
+               Admin
             </Link>
           </p>
         </div>
